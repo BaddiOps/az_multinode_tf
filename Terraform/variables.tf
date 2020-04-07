@@ -23,6 +23,14 @@ variable "bastion_vm_size" {
   description = "Size of the web Node"
 }
 
+
+variable "jenkins_vm_size" {
+  description = "Size of the web Node"
+}
+
+
+
+
 variable "web_vm_size" {
   description = "Size of the web Node"
 }

@@ -116,3 +116,33 @@ resource "azurerm_network_interface" "db" {
   }
 }
 
+
+
+# PUblic IP and NIC for Jenkins Centos
+
+
+#NIC and IP for jenkins
+
+resource "azurerm_public_ip" "jenkins" {
+  name                = "${var.prefix}-jenkins-pip"
+  resource_group_name = azurerm_resource_group.project_z.name
+  location            = azurerm_resource_group.project_z.location
+  allocation_method   = "Static"
+  sku                 = "Standard"
+  tags                = var.tags
+}
+
+
+
+resource "azurerm_network_interface" "jenkins" {
+  name                = "${var.prefix}-nic-jenkins"
+  location            = azurerm_resource_group.project_z.location
+  resource_group_name = azurerm_resource_group.project_z.name
+
+  ip_configuration {
+    name                          = "configuration"
+    subnet_id                     = azurerm_subnet.public.id
+    private_ip_address_allocation = "dynamic"
+    public_ip_address_id          = azurerm_public_ip.jenkins.id
+  }
+}

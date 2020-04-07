@@ -2,6 +2,14 @@ output "bastion_ip" {
     value = azurerm_public_ip.bastion.ip_address
 }
 
+
+output "jenkisn_ip" {
+    value = azurerm_public_ip.jenkins.ip_address
+}
+
+
+
+
 output "bastion_private_ip" {
 
     value = azurerm_network_interface.bastion.private_ip_address
