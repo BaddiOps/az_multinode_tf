@@ -38,7 +38,7 @@ resource "azurerm_network_interface" "bastion" {
 
 resource "azurerm_network_interface" "web-ubuntu" {
   count               = var.web_ubuntu_node_count
-  name                = "${var.prefix}-nic-web-ubuntu-centos-${count.index}"
+  name                = "${var.prefix}-nic-web-ubuntu-${count.index}"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 
@@ -53,7 +53,7 @@ resource "azurerm_network_interface" "web-ubuntu" {
 
 resource "azurerm_network_interface" "web-centos" {
   count               = var.web_centos_node_count
-  name                = "${var.prefix}-nic-web-ubuntu-centos-${count.index}"
+  name                = "${var.prefix}-nic-web-centos-${count.index}"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
 

@@ -6,7 +6,7 @@ data "template_file" "web-centos" {
 
 resource "azurerm_virtual_machine" "web-centos" {
   count = var.web_centos_node_count
-  name                  = "${var.prefix}-web-centos"
+  name                  = "${var.prefix}-web-centos-${count.index}"
   location              = azurerm_resource_group.main.location
   resource_group_name   = azurerm_resource_group.main.name
   network_interface_ids = [element(azurerm_network_interface.web-centos.*.id, count.index)]
