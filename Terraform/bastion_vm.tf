@@ -5,8 +5,8 @@ data "template_file" "bastion" {
 
 resource "azurerm_virtual_machine" "bastion" {
   name                  = "${var.prefix}-bastion"
-  location              = azurerm_resource_group.project_z.location
-  resource_group_name   = azurerm_resource_group.project_z.name
+  location              = azurerm_resource_group.main.location
+  resource_group_name   = azurerm_resource_group.main.name
   network_interface_ids = [azurerm_network_interface.bastion.id]
   vm_size               = var.bastion_vm_size
 

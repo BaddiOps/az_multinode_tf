@@ -3,8 +3,8 @@
 
 resource "azurerm_network_security_group" "bastion" {
   name                = "bastion"
-  location            = azurerm_resource_group.project_z.location
-  resource_group_name = azurerm_resource_group.project_z.name
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 }
 
 resource "azurerm_network_security_rule" "bastion" {
@@ -18,7 +18,7 @@ resource "azurerm_network_security_rule" "bastion" {
   destination_address_prefix  = "*"
   destination_port_range      = element(var.bastion_inbound_ports, count.index)
   protocol                    = "TCP"
-  resource_group_name         = azurerm_resource_group.project_z.name
+  resource_group_name         = azurerm_resource_group.main.name
   network_security_group_name = azurerm_network_security_group.bastion.name
 }
 
@@ -30,12 +30,12 @@ resource "azurerm_subnet_network_security_group_association" "bastion" {
 
 
 
-# Security Group for web Node
+# Security Group for web Nodes
 
 resource "azurerm_network_security_group" "web" {
   name                = "web"
-  location            = azurerm_resource_group.project_z.location
-  resource_group_name = azurerm_resource_group.project_z.name
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 }
 
 resource "azurerm_network_security_rule" "web" {
@@ -49,7 +49,7 @@ resource "azurerm_network_security_rule" "web" {
   destination_address_prefix  = "*"
   destination_port_range      = element(var.web_inbound_ports, count.index)
   protocol                    = "TCP"
-  resource_group_name         = azurerm_resource_group.project_z.name
+  resource_group_name         = azurerm_resource_group.main.name
   network_security_group_name = azurerm_network_security_group.web.name
 }
 
@@ -63,8 +63,8 @@ resource "azurerm_subnet_network_security_group_association" "web" {
 # Security Group for db  Node
 resource "azurerm_network_security_group" "db" {
   name                = "db"
-  location            = azurerm_resource_group.project_z.location
-  resource_group_name = azurerm_resource_group.project_z.name
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 }
 
 resource "azurerm_network_security_rule" "db" {
@@ -78,7 +78,7 @@ resource "azurerm_network_security_rule" "db" {
   destination_address_prefix  = "*"
   destination_port_range      = element(var.db_inbound_ports, count.index)
   protocol                    = "TCP"
-  resource_group_name         = azurerm_resource_group.project_z.name
+  resource_group_name         = azurerm_resource_group.main.name
   network_security_group_name = azurerm_network_security_group.db.name
 }
 

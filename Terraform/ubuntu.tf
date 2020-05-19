@@ -1,20 +1,20 @@
 #Fetch the Cloudinit (userdate) file
 
-data "template_file" "web" {
-  template = file("${path.module}/Templates/cloudnint-web.tpl")
+data "template_file" "web-ubuntu" {
+  template = file("${path.module}/Templates/cloudnint-ubuntu.tpl")
 }
 
 data "template_file" "key_data" {
   template = file("~/.ssh/id_rsa.pub")
 }
 
-resource "azurerm_virtual_machine" "web" {
-  count                 = var.web_node_count
-  name                  = "${var.prefix}-web-${count.index}"
-  location              = azurerm_resource_group.project_z.location
-  resource_group_name   = azurerm_resource_group.project_z.name
-  network_interface_ids = [element(azurerm_network_interface.web.*.id, count.index)]
-  vm_size               = var.web_vm_size
+resource "azurerm_virtual_machine" "web-ubuntu" {
+  count                 = var.web_ubuntu_node_count
+  name                  = "${var.prefix}-web-ubuntu-${count.index}"
+  location              = azurerm_resource_group.main.location
+  resource_group_name   = azurerm_resource_group.main.name
+  network_interface_ids = [element(azurerm_network_interface.web-ubuntu.*.id, count.index)]
+  vm_size               = var.web_ubuntu_vm_size
 
   # This means the OS Disk will be deleted when Terraform destroys the Virtual Machine
   # NOTE: This may not be optimal in all cases.
@@ -32,16 +32,16 @@ resource "azurerm_virtual_machine" "web" {
   }
 
   storage_os_disk {
-    name              = "${var.prefix}-${count.index}-web-osdisk"
+    name              = "${var.prefix}-${count.index}-web-ubuntu-osdisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   os_profile {
-    computer_name  = "${var.prefix}-web-${count.index}"
+    computer_name  = "${var.prefix}-web-ubuntu-${count.index}"
     admin_username = var.admin_username
-    custom_data    = data.template_file.web.rendered
+    custom_data    = data.template_file.web-ubuntu.rendered
   }
 
   os_profile_linux_config {
@@ -53,5 +53,3 @@ resource "azurerm_virtual_machine" "web" {
     }
   }
 }
-
-

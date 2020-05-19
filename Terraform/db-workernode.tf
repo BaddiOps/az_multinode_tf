@@ -9,8 +9,8 @@ data "template_file" "db" {
 resource "azurerm_virtual_machine" "db" {
   count                 = var.db_node_count
   name                  = "${var.prefix}-db-${count.index}"
-  location              = azurerm_resource_group.project_z.location
-  resource_group_name   = azurerm_resource_group.project_z.name
+  location              = azurerm_resource_group.main.location
+  resource_group_name   = azurerm_resource_group.main.name
   network_interface_ids = [element(azurerm_network_interface.db.*.id, count.index)]
   vm_size               = var.db_vm_size
 

@@ -1,14 +1,16 @@
-data "template_file" "jenkins" {
-  template = file("${path.module}/Templates/cloudnint-jenkins.tpl")
+data "template_file" "web-centos" {
+  template = file("${path.module}/Templates/cloudnint-centos.tpl")
 }
 
 
-resource "azurerm_virtual_machine" "jenkins" {
-  name                  = "${var.prefix}-jenkins"
-  location              = azurerm_resource_group.project_z.location
-  resource_group_name   = azurerm_resource_group.project_z.name
-  network_interface_ids = [azurerm_network_interface.jenkins.id]
-  vm_size               = var.jenkins_vm_size
+
+resource "azurerm_virtual_machine" "web-centos" {
+  count = var.web_centos_node_count
+  name                  = "${var.prefix}-web-centos"
+  location              = azurerm_resource_group.main.location
+  resource_group_name   = azurerm_resource_group.main.name
+  network_interface_ids = [element(azurerm_network_interface.web-centos.*.id, count.index)]
+  vm_size               = var.web_centos_vm_size
 
   # This means the OS Disk will be deleted when Terraform destroys the Virtual Machine
   # NOTE: This may not be optimal in all cases.
@@ -26,16 +28,17 @@ resource "azurerm_virtual_machine" "jenkins" {
   }
 
   storage_os_disk {
-    name              = "${var.prefix}-jenkins-osdisk"
+    name              = "${var.prefix}-web-centos-osdisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
   }
 
   os_profile {
-    computer_name  = "${var.prefix}-jenkins"
+    computer_name  = "${var.prefix}-web-centos"
     admin_username = var.admin_username
-    custom_data    = data.template_file.jenkins.rendered
+    custom_data    = data.template_file.web-centos.rendered
+
   }
 
   os_profile_linux_config {
@@ -47,4 +50,3 @@ resource "azurerm_virtual_machine" "jenkins" {
     }
   }
 }
-

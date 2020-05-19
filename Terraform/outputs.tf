@@ -4,7 +4,7 @@ output "bastion_ip" {
 
 
 output "jenkisn_ip" {
-    value = azurerm_public_ip.jenkins.ip_address
+    value = azurerm_public_ip.web.ip_address
 }
 
 
